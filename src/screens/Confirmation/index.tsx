@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, PrimaryButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 import { getFlowState, formatMoney, CALENDLY_CALL_URL } from '../../lib/flowState';
 
@@ -23,10 +22,6 @@ const Confirmation = () => {
 
   return (
     <Page maxWidth={520}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card style={{ textAlign: 'center' }}>
         <div style={{ fontSize: 52, lineHeight: 1, marginBottom: 18 }}>
           {contactMethod === 'call' ? '📞' : contactMethod === 'text' ? '💬' : '✉️'}

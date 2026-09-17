@@ -1,53 +1,121 @@
-// Shared visual pieces for the demo flow, styled to match the Sugar funnel.
+// Shared visual pieces for the demo flow, styled to match the live concierge
+// post-payment app (soft gradient background, white header bar, rounded cards
+// with soft sugar shadows, system font, purple accents).
 import type { CSSProperties, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+
+export const FONT_STACK = 'system-ui, -apple-system, "Segoe UI", sans-serif';
 
 export const PAGE_STYLE: CSSProperties = {
   width: '100%',
   minHeight: '100dvh',
-  background: '#F0EFFA',
+  background: 'linear-gradient(180deg, #faf7ff 0%, #fff5fa 55%, #f6f2ff 100%)',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: 'clamp(40px, 10vw, 72px) clamp(20px, 5vw, 24px)',
   boxSizing: 'border-box'
 };
 
 export const CARD_STYLE: CSSProperties = {
-  background: 'white',
-  boxShadow: '11px 12px 0px #221A51',
-  borderRadius: 20,
-  padding: 'clamp(24px, 6vw, 44px)',
+  background: 'rgba(255, 255, 255, 0.9)',
+  border: '1px solid #ede5fe',
+  boxShadow: '0 14px 40px -18px rgba(155, 133, 233, 0.45)',
+  borderRadius: 24,
+  padding: 'clamp(24px, 6vw, 40px)',
   width: '100%',
-  boxSizing: 'border-box'
+  boxSizing: 'border-box',
+  backdropFilter: 'blur(4px)'
 };
 
 export const HEADING_STYLE: CSSProperties = {
   margin: 0,
-  color: '#221A51',
-  fontSize: 'clamp(28px, 6.5vw, 40px)',
-  fontFamily: 'Bricolage Grotesque, Lexend, system-ui, sans-serif',
-  fontWeight: 800,
-  lineHeight: 1.25
+  color: '#0f172a',
+  fontSize: 'clamp(26px, 6vw, 34px)',
+  fontFamily: FONT_STACK,
+  fontWeight: 700,
+  letterSpacing: '-0.02em',
+  lineHeight: 1.2
 };
 
 export const BODY_STYLE: CSSProperties = {
-  color: '#6C6881',
-  fontSize: 'clamp(16px, 4vw, 18px)',
-  fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif',
-  fontWeight: 500,
+  color: '#475569',
+  fontSize: 'clamp(15px, 3.8vw, 17px)',
+  fontFamily: FONT_STACK,
+  fontWeight: 400,
   lineHeight: 1.6
 };
 
-export const Page = ({ children, maxWidth = 520 }: { children: ReactNode; maxWidth?: number }) => (
+export const EYEBROW_STYLE: CSSProperties = {
+  margin: 0,
+  color: '#6849bc',
+  fontSize: 13,
+  fontFamily: FONT_STACK,
+  fontWeight: 600,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase'
+};
+
+const Header = () => (
+  <header
+    style={{
+      width: '100%',
+      background: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '14px clamp(16px, 5vw, 28px)',
+      boxSizing: 'border-box'
+    }}
+  >
+    <div
+      style={{
+        color: '#9B86EA',
+        fontSize: 'clamp(30px, 7vw, 36px)',
+        letterSpacing: '-0.05em',
+        fontFamily: 'Octarine, system-ui, sans-serif',
+        fontWeight: 700,
+        lineHeight: 1
+      }}
+    >
+      sugar
+    </div>
+    <div
+      aria-hidden
+      style={{
+        border: '1px solid #ede5fe',
+        borderRadius: 14,
+        padding: '10px 14px',
+        color: '#6849bc',
+        fontWeight: 700,
+        fontSize: 14,
+        lineHeight: 1,
+        letterSpacing: 2
+      }}
+    >
+      •••
+    </div>
+  </header>
+);
+
+export const Page = ({ children, maxWidth = 560 }: { children: ReactNode; maxWidth?: number }) => (
   <div style={PAGE_STYLE}>
-    <div style={{ width: '100%', maxWidth }}>{children}</div>
+    <Header />
+    <div
+      style={{
+        width: '100%',
+        maxWidth,
+        padding: 'clamp(20px, 5vw, 36px) clamp(16px, 5vw, 24px) 64px',
+        boxSizing: 'border-box'
+      }}
+    >
+      {children}
+    </div>
   </div>
 );
 
 export const Card = ({ children, style }: { children: ReactNode; style?: CSSProperties }) => (
   <motion.div
-    initial={{ opacity: 0, y: 24 }}
+    initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     style={{ ...CARD_STYLE, ...style }}
@@ -75,13 +143,13 @@ export const PrimaryButton = ({
     whileTap={disabled ? undefined : { scale: 0.98 }}
     style={{
       width: '100%',
-      padding: '16px',
-      background: disabled ? 'rgba(155, 134, 234, 0.5)' : '#9B86EA',
-      boxShadow: disabled ? 'none' : '6px 8px 0px #221A51',
-      borderRadius: 50,
+      padding: '15px',
+      background: disabled ? '#c3aef9' : '#9b85e9',
+      boxShadow: disabled ? 'none' : '0 14px 40px -18px rgba(155, 133, 233, 0.65)',
+      borderRadius: 14,
       color: 'white',
-      fontSize: 18,
-      fontFamily: 'Instrument Sans, Lexend, system-ui, sans-serif',
+      fontSize: 16,
+      fontFamily: FONT_STACK,
       fontWeight: 600,
       border: 'none',
       cursor: disabled ? 'not-allowed' : 'pointer',
@@ -109,14 +177,16 @@ export const OptionButton = ({
     style={{
       width: '100%',
       padding: '16px 20px',
-      background: selected ? '#9B86EA' : 'white',
-      color: selected ? 'white' : '#221A51',
-      border: '2px solid ' + (selected ? '#9B86EA' : '#E4E1F5'),
-      boxShadow: selected ? '4px 6px 0px #221A51' : 'none',
+      background: selected ? '#9b85e9' : 'white',
+      color: selected ? 'white' : '#0f172a',
+      border: '1px solid ' + (selected ? '#9b85e9' : '#ede5fe'),
+      boxShadow: selected
+        ? '0 14px 40px -18px rgba(155, 133, 233, 0.65)'
+        : '0 8px 24px -18px rgba(155, 133, 233, 0.4)',
       borderRadius: 16,
-      fontSize: 17,
-      fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif',
-      fontWeight: 700,
+      fontSize: 16,
+      fontFamily: FONT_STACK,
+      fontWeight: 600,
       cursor: 'pointer',
       textAlign: 'left'
     }}

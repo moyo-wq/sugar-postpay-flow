@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 
 const STEP_MS = 950;
@@ -36,10 +35,6 @@ const Connecting = () => {
           100% { transform: rotate(360deg); }
         }
       `}</style>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card style={{ textAlign: 'center' }}>
         <div
           style={{

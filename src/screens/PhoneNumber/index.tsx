@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, PrimaryButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 import { updateFlowState } from '../../lib/flowState';
 
@@ -22,10 +21,6 @@ const PhoneNumber = () => {
 
   return (
     <Page maxWidth={480}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card>
         <h1 style={HEADING_STYLE}>What number should we text you on?</h1>
         <p style={{ ...BODY_STYLE, marginTop: 12 }}>
@@ -38,10 +33,10 @@ const PhoneNumber = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: 6,
-            fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif'
+            fontFamily: 'system-ui, -apple-system, sans-serif'
           }}
         >
-          <span style={{ color: '#6C6881', fontSize: 13, fontWeight: 600 }}>Mobile number</span>
+          <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>Mobile number</span>
           <input
             type="tel"
             value={phone}

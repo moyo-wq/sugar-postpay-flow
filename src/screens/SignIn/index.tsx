@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, OptionButton, HEADING_STYLE } from '../../components/ui';
 import {
   getFlowState,
@@ -31,10 +30,6 @@ const SignIn = () => {
 
   return (
     <Page maxWidth={520}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card>
         <h1 style={HEADING_STYLE}>How would you like to sign in?</h1>
 

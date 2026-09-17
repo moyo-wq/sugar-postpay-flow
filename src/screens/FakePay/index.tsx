@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, PrimaryButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 import { setDemoPaid, resetDemo } from '../../lib/demoStore';
 import { updateFlowState } from '../../lib/flowState';
@@ -43,10 +42,6 @@ const FakePay = () => {
           100% { transform: rotate(360deg); }
         }
       `}</style>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card>
         <div
           style={{
@@ -55,7 +50,7 @@ const FakePay = () => {
             letterSpacing: 1.2,
             textTransform: 'uppercase',
             color: '#9B86EA',
-            fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif'
+            fontFamily: 'system-ui, -apple-system, sans-serif'
           }}
         >
           Demo checkout · no real payment
@@ -73,11 +68,11 @@ const FakePay = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif'
+            fontFamily: 'system-ui, -apple-system, sans-serif'
           }}
         >
-          <span style={{ color: '#6C6881', fontWeight: 600 }}>Concierge unlock fee</span>
-          <span style={{ color: '#221A51', fontWeight: 800, fontSize: 20 }}>$49.00</span>
+          <span style={{ color: '#64748b', fontWeight: 600 }}>Concierge unlock fee</span>
+          <span style={{ color: '#0f172a', fontWeight: 800, fontSize: 20 }}>$49.00</span>
         </div>
 
         <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -86,10 +81,10 @@ const FakePay = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: 6,
-              fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif'
+              fontFamily: 'system-ui, -apple-system, sans-serif'
             }}
           >
-            <span style={{ color: '#6C6881', fontSize: 13, fontWeight: 600 }}>Email</span>
+            <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>Email</span>
             <input
               type="email"
               value={email}
@@ -160,12 +155,12 @@ const FakePay = () => {
             padding: '8px 16px',
             borderRadius: 50,
             border: 'none',
-            background: '#221A51',
+            background: '#0f172a',
             color: 'white',
             fontWeight: 600,
             fontSize: 14,
             cursor: 'pointer',
-            fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif'
+            fontFamily: 'system-ui, -apple-system, sans-serif'
           }}
         >
           Reset demo state
@@ -182,10 +177,10 @@ const FakeField = ({ label, value }: { label: string; value: string }) => (
       display: 'flex',
       flexDirection: 'column',
       gap: 6,
-      fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif'
+      fontFamily: 'system-ui, -apple-system, sans-serif'
     }}
   >
-    <span style={{ color: '#6C6881', fontSize: 13, fontWeight: 600 }}>{label}</span>
+    <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>{label}</span>
     <input
       value={value}
       readOnly

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, OptionButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 import {
   getFlowState,
@@ -27,10 +26,6 @@ const ContactMethod = () => {
 
   return (
     <Page maxWidth={520}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card>
         <h1 style={HEADING_STYLE}>
           Great! Now, how would you prefer your account manager to contact you?

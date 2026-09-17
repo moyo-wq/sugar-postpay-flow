@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
-import SugarWordmark from '../../components/SugarWordmark';
-import { Page, Card, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
+import { Page, Card, HEADING_STYLE, BODY_STYLE, EYEBROW_STYLE, FONT_STACK } from '../../components/ui';
 import {
   getFlowState,
   signInMethodLabel,
@@ -48,25 +47,30 @@ const managerCardStyle: CSSProperties = {
 
 const sectionTitleStyle: CSSProperties = {
   margin: '0 0 clamp(12px, 3vw, 18px) 0',
-  color: '#221A51',
+  color: '#0f172a',
   fontSize: 'clamp(17px, 4.2vw, 20px)',
-  fontFamily: 'Lexend, system-ui, sans-serif',
+  fontFamily: 'system-ui, -apple-system, sans-serif',
   fontWeight: 700,
   lineHeight: 1.3
 };
 
 const secondaryTextStyle: CSSProperties = {
-  color: '#6C6881',
+  color: '#64748b',
   fontSize: 'clamp(13px, 3.4vw, 15px)',
-  fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif',
+  fontFamily: 'system-ui, -apple-system, sans-serif',
   fontWeight: 500,
   lineHeight: 1.5,
   margin: 0
 };
 
 const Dashboard = () => {
-  const { signInMethod, contactMethod, savingsLow, savingsHigh } = getFlowState();
+  const { email, signInMethod, contactMethod, savingsLow, savingsHigh } = getFlowState();
   const emailConnected = signInMethod === 'email';
+  const memberSince = new Date().toLocaleDateString('en-NZ', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
 
   // Scanned users get their annualized range; everyone else the $3,000 baseline.
   const planAmount =
@@ -100,18 +104,34 @@ const Dashboard = () => {
           50% { box-shadow: 0 0 0 8px rgba(240, 180, 41, 0); }
         }
       `}</style>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
+      {/* Welcome hero, like the live concierge dashboard */}
+      <div style={{ margin: '4px 0 24px' }}>
+        <h1
+          style={{
+            margin: 0,
+            color: '#0f172a',
+            fontSize: 'clamp(32px, 8.5vw, 44px)',
+            fontFamily: FONT_STACK,
+            fontWeight: 800,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.15,
+            overflowWrap: 'anywhere'
+          }}
+        >
+          Welcome <span style={{ color: '#9b85e9' }}>{email || 'back'}</span>!
+        </h1>
+        <p style={{ ...BODY_STYLE, marginTop: 10 }}>Member since {memberSince}</p>
       </div>
 
       <Card>
-        <h1 style={{ ...HEADING_STYLE, fontSize: 'clamp(24px, 5.5vw, 32px)' }}>
+        <p style={EYEBROW_STYLE}>Status / Plan</p>
+        <h1 style={{ ...HEADING_STYLE, marginTop: 10, fontSize: 'clamp(24px, 5.5vw, 32px)' }}>
           Your Dashboard
         </h1>
         <p style={{ ...BODY_STYLE, marginTop: 10 }}>
           {savingsLow && savingsHigh ? (
             <>
-              Your scan found <strong style={{ color: '#221A51' }}>
+              Your scan found <strong style={{ color: '#0f172a' }}>
                 {formatMoney(savingsLow)} to {formatMoney(savingsHigh)}
               </strong>{' '}
               a year in savings. We&rsquo;ll keep this updated as your account manager
@@ -158,7 +178,80 @@ const Dashboard = () => {
         <ReferralCard />
         <MembershipSection />
       </div>
+
+      <div style={{ height: 56 }} />
+      <BottomNav uploadAvailable={!emailConnected} />
     </Page>
+  );
+};
+
+// ── Bottom nav, like the live concierge dashboard ────────────────────────────
+
+const BottomNav = ({ uploadAvailable }: { uploadAvailable: boolean }) => {
+  const itemStyle = (active: boolean): CSSProperties => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 4,
+    padding: '8px 22px',
+    borderRadius: 14,
+    background: active ? '#ede5fe' : 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    color: active ? '#6849bc' : '#64748b',
+    fontFamily: FONT_STACK,
+    fontSize: 13,
+    fontWeight: 600
+  });
+
+  return (
+    <nav
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: 'white',
+        borderTop: '1px solid #ede5fe',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        padding: '8px 12px calc(8px + env(safe-area-inset-bottom))',
+        zIndex: 40
+      }}
+    >
+      <button type="button" style={itemStyle(true)}>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 10.5 12 3l9 7.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M5 9.5V21h14V9.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Dashboard
+      </button>
+      <button
+        type="button"
+        style={itemStyle(false)}
+        onClick={() => {
+          if (uploadAvailable) {
+            document
+              .getElementById('upload-documents')
+              ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }}
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 16V4m0 0-4 4m4-4 4 4" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Upload
+      </button>
+      <button type="button" style={itemStyle(false)}>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="3.2" />
+          <path d="M19 12a7 7 0 0 0-.1-1.1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.9-1.1L14.2 3h-4l-.4 2.6a7 7 0 0 0-1.9 1.1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.9 1.1l.4 2.6h4l.4-2.6a7 7 0 0 0 1.9-1.1l2.4 1 2-3.4-2-1.6c.1-.35.1-.72.1-1.1Z" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Settings
+      </button>
+    </nav>
   );
 };
 
@@ -225,10 +318,10 @@ const TimelineStep = ({
     <div style={{ paddingBottom: isLast ? 0 : 22 }}>
       <div
         style={{
-          fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
           fontWeight: 700,
           fontSize: 17,
-          color: status === 'upcoming' ? '#A5A1BD' : '#221A51',
+          color: status === 'upcoming' ? '#A5A1BD' : '#0f172a',
           lineHeight: '28px'
         }}
       >
@@ -254,9 +347,9 @@ const TimelineStep = ({
         <div
           style={{
             marginTop: 4,
-            fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
             fontSize: 14,
-            color: '#6C6881'
+            color: '#64748b'
           }}
         >
           {detail}
@@ -282,7 +375,7 @@ const YourAccountManager = () => {
     color,
     fontWeight: 600,
     fontSize: 'clamp(12px, 3.2vw, 14px)',
-    fontFamily: 'Lexend, system-ui, sans-serif',
+    fontFamily: 'system-ui, -apple-system, sans-serif',
     textDecoration: 'none',
     transition: 'transform 0.15s',
     border: 'none',
@@ -317,7 +410,7 @@ const YourAccountManager = () => {
               color: '#9B86EA',
               fontSize: 'clamp(18px, 5vw, 24px)',
               fontWeight: 700,
-              fontFamily: 'Lexend, system-ui, sans-serif'
+              fontFamily: 'system-ui, -apple-system, sans-serif'
             }}>
               {m.initials}
             </span>
@@ -339,9 +432,9 @@ const YourAccountManager = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <p style={{
               margin: 0,
-              color: '#221A51',
+              color: '#0f172a',
               fontSize: 'clamp(16px, 4vw, 18px)',
-              fontFamily: 'Lexend, system-ui, sans-serif',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
               fontWeight: 700,
               lineHeight: 1.3
             }}>
@@ -350,7 +443,7 @@ const YourAccountManager = () => {
             <span style={{
               color: online ? '#16A34A' : '#A09CB0',
               fontSize: 'clamp(11px, 2.8vw, 12px)',
-              fontFamily: 'Lexend, system-ui, sans-serif',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
               fontWeight: 600
             }}>
               {online ? 'Online' : 'Offline'}
@@ -365,13 +458,13 @@ const YourAccountManager = () => {
 
       {/* Contact options */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 'clamp(12px, 3vw, 16px)' }}>
-        <a href={`tel:${m.phone}`} style={contactPillStyle('#F0EFFA', '#221A51')}>
+        <a href={`tel:${m.phone}`} style={contactPillStyle('#F0EFFA', '#0f172a')}>
           {'📞'} Call
         </a>
         <a href={m.whatsapp} target="_blank" rel="noopener noreferrer" style={contactPillStyle('#ECFDF5', '#16A34A')}>
           WhatsApp
         </a>
-        <a href={`mailto:${m.email}`} style={contactPillStyle('#F0EFFA', '#221A51')}>
+        <a href={`mailto:${m.email}`} style={contactPillStyle('#F0EFFA', '#0f172a')}>
           {'✉️'} Email
         </a>
       </div>

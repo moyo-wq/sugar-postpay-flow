@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, PrimaryButton, Confetti, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 import { updateFlowState, computeScanRange, formatMoney } from '../../lib/flowState';
 
@@ -39,10 +38,6 @@ const ScanResults = () => {
   return (
     <Page maxWidth={520}>
       {done && <Confetti />}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card style={{ textAlign: 'center' }}>
         <h1 style={{ ...HEADING_STYLE, fontSize: 'clamp(24px, 5.5vw, 32px)' }}>
           Scan complete. Here&rsquo;s what we found
@@ -55,9 +50,9 @@ const ScanResults = () => {
             alignItems: 'baseline',
             justifyContent: 'center',
             gap: 'clamp(10px, 3vw, 16px)',
-            fontFamily: 'Bricolage Grotesque, Lexend, system-ui, sans-serif',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
             fontWeight: 800,
-            color: '#221A51'
+            color: '#0f172a'
           }}
         >
           <span style={{ fontSize: 'clamp(34px, 9vw, 52px)', fontVariantNumeric: 'tabular-nums' }}>
@@ -66,9 +61,9 @@ const ScanResults = () => {
           <span
             style={{
               fontSize: 'clamp(16px, 4vw, 20px)',
-              fontFamily: 'Schibsted Grotesk, Lexend, system-ui, sans-serif',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
               fontWeight: 600,
-              color: '#6C6881'
+              color: '#64748b'
             }}
           >
             to
@@ -78,7 +73,7 @@ const ScanResults = () => {
           </span>
         </div>
 
-        <p style={{ ...BODY_STYLE, marginTop: 10, fontWeight: 700, color: '#221A51' }}>
+        <p style={{ ...BODY_STYLE, marginTop: 10, fontWeight: 700, color: '#0f172a' }}>
           in savings a year
         </p>
         <p style={{ ...BODY_STYLE, marginTop: 6, fontSize: 14 }}>

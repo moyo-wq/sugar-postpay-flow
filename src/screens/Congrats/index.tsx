@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import SugarWordmark from '../../components/SugarWordmark';
 import { Page, Card, PrimaryButton, Confetti, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
 
 const Congrats = () => {
@@ -9,10 +8,6 @@ const Congrats = () => {
   return (
     <Page maxWidth={520}>
       <Confetti />
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        <SugarWordmark marginBottom={0} />
-      </div>
-
       <Card style={{ textAlign: 'center' }}>
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
@@ -50,7 +45,7 @@ const Congrats = () => {
           Let&rsquo;s go get that money 💸
         </h1>
         <p style={{ ...BODY_STYLE, marginTop: 16 }}>
-          <strong style={{ color: '#221A51' }}>$3,000 back in your pocket</strong> or your
+          <strong style={{ color: '#0f172a' }}>$3,000 back in your pocket</strong> or your
           money back.
         </p>
 

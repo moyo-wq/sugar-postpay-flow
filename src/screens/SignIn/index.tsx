@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Page, Card, OptionButton, HEADING_STYLE } from '../../components/ui';
+import { Sheet, OptionButton, HEADING_STYLE, BODY_STYLE, EYEBROW_STYLE } from '../../components/ui';
 import {
   getFlowState,
   updateFlowState,
@@ -29,25 +29,27 @@ const SignIn = () => {
   };
 
   return (
-    <Page maxWidth={520}>
-      <Card>
-        <h1 style={HEADING_STYLE}>How would you like to sign in?</h1>
+    <Sheet step={1} onBack={() => navigate('/congrats')}>
+      <p style={EYEBROW_STYLE}>Sign in</p>
+      <h1 style={{ ...HEADING_STYLE, marginTop: 12 }}>How would you like to sign in?</h1>
+      <p style={{ ...BODY_STYLE, marginTop: 12 }}>
+        This is how Sugar starts working on your savings.
+      </p>
 
-        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {showEmail && (
-            <OptionButton onClick={() => choose('email')}>✉️ &nbsp;Sign in via email</OptionButton>
-          )}
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {showEmail && (
+          <OptionButton onClick={() => choose('email')}>✉️ &nbsp;Sign in via email</OptionButton>
+        )}
 
-          <OptionButton onClick={() => choose('bank')}>🏦 &nbsp;Sign in via bank</OptionButton>
+        <OptionButton onClick={() => choose('bank')}>🏦 &nbsp;Sign in via bank</OptionButton>
 
-          {showAccountManager && (
-            <OptionButton onClick={() => choose('account_manager')}>
-              🧑‍💼 &nbsp;Sign in with your account manager
-            </OptionButton>
-          )}
-        </div>
-      </Card>
-    </Page>
+        {showAccountManager && (
+          <OptionButton onClick={() => choose('account_manager')}>
+            🧑‍💼 &nbsp;Sign in with your account manager
+          </OptionButton>
+        )}
+      </div>
+    </Sheet>
   );
 };
 

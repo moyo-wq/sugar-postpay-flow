@@ -1,6 +1,14 @@
 import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
-import { Page, Card, HEADING_STYLE, BODY_STYLE, EYEBROW_STYLE, FONT_STACK } from '../../components/ui';
+import {
+  PhonePage,
+  PhoneHeader,
+  PHONE_WIDTH,
+  HEADING_STYLE,
+  BODY_STYLE,
+  EYEBROW_STYLE,
+  FONT_STACK
+} from '../../components/ui';
 import {
   getFlowState,
   signInMethodLabel,
@@ -97,20 +105,27 @@ const Dashboard = () => {
   ];
 
   return (
-    <Page maxWidth={560}>
+    <PhonePage>
       <style>{`
         @keyframes dash-pulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(240, 180, 41, 0.5); }
           50% { box-shadow: 0 0 0 8px rgba(240, 180, 41, 0); }
         }
       `}</style>
+      <PhoneHeader />
+
       {/* Welcome hero, like the live concierge dashboard */}
-      <div style={{ margin: '4px 0 24px' }}>
+      <div
+        style={{
+          background: 'linear-gradient(115deg, #f1e9fc 0%, #fbeaf2 70%, #fde9ef 100%)',
+          padding: '36px 22px 30px'
+        }}
+      >
         <h1
           style={{
             margin: 0,
-            color: '#0f172a',
-            fontSize: 'clamp(32px, 8.5vw, 44px)',
+            color: '#111827',
+            fontSize: 'clamp(34px, 9vw, 42px)',
             fontFamily: FONT_STACK,
             fontWeight: 800,
             letterSpacing: '-0.02em',
@@ -118,53 +133,63 @@ const Dashboard = () => {
             overflowWrap: 'anywhere'
           }}
         >
-          Welcome <span style={{ color: '#9b85e9' }}>{email || 'back'}</span>!
+          Welcome <span style={{ color: '#a78bfa' }}>{email || 'back'}</span>!
         </h1>
-        <p style={{ ...BODY_STYLE, marginTop: 10 }}>Member since {memberSince}</p>
-      </div>
-
-      <Card>
-        <p style={EYEBROW_STYLE}>Status / Plan</p>
-        <h1 style={{ ...HEADING_STYLE, marginTop: 10, fontSize: 'clamp(24px, 5.5vw, 32px)' }}>
-          Your Dashboard
-        </h1>
-        <p style={{ ...BODY_STYLE, marginTop: 10 }}>
-          {savingsLow && savingsHigh ? (
-            <>
-              Your scan found <strong style={{ color: '#0f172a' }}>
-                {formatMoney(savingsLow)} to {formatMoney(savingsHigh)}
-              </strong>{' '}
-              a year in savings. We&rsquo;ll keep this updated as your account manager
-              makes progress.
-            </>
-          ) : (
-            <>
-              Here&rsquo;s where things are at. We&rsquo;ll keep this updated as your
-              account manager makes progress.
-            </>
-          )}
+        <p style={{ ...BODY_STYLE, marginTop: 12, color: '#475569' }}>
+          Member since {memberSince}
         </p>
 
-        <div style={{ marginTop: 28 }}>
-          {steps.map((step, index) => (
-            <TimelineStep
-              key={step.label}
-              label={step.label}
-              detail={step.detail}
-              status={step.status}
-              isLast={index === steps.length - 1}
-            />
-          ))}
-        </div>
+        {/* Status / plan card overlapping the hero, like the live app */}
+        <div
+          style={{
+            marginTop: 26,
+            background: 'white',
+            borderRadius: 24,
+            border: '1px solid #f1eafd',
+            boxShadow: '0 20px 50px -30px rgba(104, 73, 188, 0.35)',
+            padding: '24px 22px'
+          }}
+        >
+          <p style={EYEBROW_STYLE}>Status / Plan</p>
+          <h2 style={{ ...HEADING_STYLE, marginTop: 10, fontSize: 28 }}>Your Dashboard</h2>
+          <p style={{ ...BODY_STYLE, marginTop: 10 }}>
+            {savingsLow && savingsHigh ? (
+              <>
+                Your scan found <strong style={{ color: '#111827' }}>
+                  {formatMoney(savingsLow)} to {formatMoney(savingsHigh)}
+                </strong>{' '}
+                a year in savings. We&rsquo;ll keep this updated as your account manager
+                makes progress.
+              </>
+            ) : (
+              <>
+                Here&rsquo;s where things are at. We&rsquo;ll keep this updated as your
+                account manager makes progress.
+              </>
+            )}
+          </p>
 
-        <div style={{ marginTop: 28 }}>
-          <YourAccountManager />
+          <div style={{ marginTop: 24 }}>
+            {steps.map((step, index) => (
+              <TimelineStep
+                key={step.label}
+                label={step.label}
+                detail={step.detail}
+                status={step.status}
+                isLast={index === steps.length - 1}
+              />
+            ))}
+          </div>
+
+          <div style={{ marginTop: 24 }}>
+            <YourAccountManager />
+          </div>
         </div>
-      </Card>
+      </div>
 
       {/* Sections ported from the real concierge dashboard. Email-connected
           users skip the upload + connect-email prompts, like production. */}
-      <div style={{ marginTop: 28, width: '100%' }}>
+      <div style={{ padding: '24px 22px 0' }}>
         <MoveFasterSection
           showUpload={!emailConnected}
           onUpload={() =>
@@ -179,9 +204,9 @@ const Dashboard = () => {
         <MembershipSection />
       </div>
 
-      <div style={{ height: 56 }} />
+      <div style={{ height: 84 }} />
       <BottomNav uploadAvailable={!emailConnected} />
-    </Page>
+    </PhonePage>
   );
 };
 
@@ -209,8 +234,10 @@ const BottomNav = ({ uploadAvailable }: { uploadAvailable: boolean }) => {
       style={{
         position: 'fixed',
         bottom: 0,
-        left: 0,
-        right: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: `min(${PHONE_WIDTH}px, 100%)`,
+        boxSizing: 'border-box',
         background: 'white',
         borderTop: '1px solid #ede5fe',
         display: 'flex',

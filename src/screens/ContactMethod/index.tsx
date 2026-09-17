@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Page, Card, OptionButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
+import { Sheet, OptionButton, HEADING_STYLE, BODY_STYLE, EYEBROW_STYLE } from '../../components/ui';
 import {
   getFlowState,
   updateFlowState,
@@ -25,26 +25,23 @@ const ContactMethod = () => {
   };
 
   return (
-    <Page maxWidth={520}>
-      <Card>
-        <h1 style={HEADING_STYLE}>
-          Great! Now, how would you prefer your account manager to contact you?
-        </h1>
+    <Sheet step={3} onBack={() => navigate(-1)}>
+      <p style={EYEBROW_STYLE}>Your account manager</p>
+      <h1 style={{ ...HEADING_STYLE, marginTop: 12 }}>
+        Great! Now, how would you prefer your account manager to contact you?
+      </h1>
 
-        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <OptionButton onClick={() => choose('email')}>
-            ✉️ &nbsp;Email
-            {email && (
-              <div style={{ ...BODY_STYLE, fontSize: 14, fontWeight: 500, marginTop: 4 }}>
-                We&rsquo;ll use {email}
-              </div>
-            )}
-          </OptionButton>
-          <OptionButton onClick={() => choose('text')}>💬 &nbsp;Text me</OptionButton>
-          <OptionButton onClick={() => choose('call')}>📞 &nbsp;Call me</OptionButton>
-        </div>
-      </Card>
-    </Page>
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <OptionButton onClick={() => choose('email')}>
+          ✉️ &nbsp;Email
+          {email && (
+            <div style={{ ...BODY_STYLE, fontSize: 14, marginTop: 4 }}>We&rsquo;ll use {email}</div>
+          )}
+        </OptionButton>
+        <OptionButton onClick={() => choose('text')}>💬 &nbsp;Text me</OptionButton>
+        <OptionButton onClick={() => choose('call')}>📞 &nbsp;Call me</OptionButton>
+      </div>
+    </Sheet>
   );
 };
 

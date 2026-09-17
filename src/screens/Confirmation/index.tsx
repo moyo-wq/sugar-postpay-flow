@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Page, Card, PrimaryButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
+import { Sheet, PrimaryButton, HEADING_STYLE, BODY_STYLE, EYEBROW_STYLE } from '../../components/ui';
 import { getFlowState, formatMoney, CALENDLY_CALL_URL } from '../../lib/flowState';
 
 const Confirmation = () => {
@@ -21,12 +21,13 @@ const Confirmation = () => {
       : email && `We'll email ${email}.`;
 
   return (
-    <Page maxWidth={520}>
-      <Card style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 52, lineHeight: 1, marginBottom: 18 }}>
+    <Sheet step={5}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: 50, lineHeight: 1, marginBottom: 16 }}>
           {contactMethod === 'call' ? '📞' : contactMethod === 'text' ? '💬' : '✉️'}
         </div>
-        <h1 style={{ ...HEADING_STYLE, fontSize: 'clamp(26px, 6vw, 36px)' }}>{heading}</h1>
+        <p style={EYEBROW_STYLE}>All set</p>
+        <h1 style={{ ...HEADING_STYLE, marginTop: 12, fontSize: 26 }}>{heading}</h1>
         {detail && <p style={{ ...BODY_STYLE, marginTop: 14 }}>{detail}</p>}
         {contactMethod === 'call' && (
           <p style={{ ...BODY_STYLE, marginTop: 8 }}>
@@ -35,7 +36,7 @@ const Confirmation = () => {
               href={CALENDLY_CALL_URL}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: '#9B86EA', fontWeight: 700 }}
+              style={{ color: '#7c63d6', fontWeight: 700 }}
             >
               Open Calendly
             </a>
@@ -48,11 +49,11 @@ const Confirmation = () => {
           </p>
         )}
 
-        <div style={{ marginTop: 28 }}>
+        <div style={{ marginTop: 26 }}>
           <PrimaryButton onClick={() => navigate('/dashboard')}>Continue</PrimaryButton>
         </div>
-      </Card>
-    </Page>
+      </div>
+    </Sheet>
   );
 };
 

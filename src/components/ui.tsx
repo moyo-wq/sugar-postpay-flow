@@ -1,154 +1,267 @@
-// Shared visual pieces for the demo flow, styled to match the live concierge
-// post-payment app (soft gradient background, white header bar, rounded cards
-// with soft sugar shadows, system font, purple accents).
+// Shared visual pieces for the demo flow, matching the live concierge
+// post-payment app: phone-width onboarding sheets with progress dots floating
+// over a blurred backdrop, and a phone-frame dashboard page. Everything stays
+// phone-width even on desktop.
 import type { CSSProperties, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
 export const FONT_STACK = 'system-ui, -apple-system, "Segoe UI", sans-serif';
 
-export const PAGE_STYLE: CSSProperties = {
-  width: '100%',
-  minHeight: '100dvh',
-  background: 'linear-gradient(180deg, #faf7ff 0%, #fff5fa 55%, #f6f2ff 100%)',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  boxSizing: 'border-box'
-};
-
-export const CARD_STYLE: CSSProperties = {
-  background: 'rgba(255, 255, 255, 0.9)',
-  border: '1px solid #ede5fe',
-  boxShadow: '0 14px 40px -18px rgba(155, 133, 233, 0.45)',
-  borderRadius: 24,
-  padding: 'clamp(24px, 6vw, 40px)',
-  width: '100%',
-  boxSizing: 'border-box',
-  backdropFilter: 'blur(4px)'
-};
-
 export const HEADING_STYLE: CSSProperties = {
   margin: 0,
-  color: '#0f172a',
-  fontSize: 'clamp(26px, 6vw, 34px)',
+  color: '#111827',
+  fontSize: 'clamp(28px, 7vw, 34px)',
   fontFamily: FONT_STACK,
-  fontWeight: 700,
+  fontWeight: 800,
   letterSpacing: '-0.02em',
-  lineHeight: 1.2
+  lineHeight: 1.15
 };
 
 export const BODY_STYLE: CSSProperties = {
-  color: '#475569',
-  fontSize: 'clamp(15px, 3.8vw, 17px)',
+  color: '#64748b',
+  fontSize: 17,
   fontFamily: FONT_STACK,
   fontWeight: 400,
-  lineHeight: 1.6
+  lineHeight: 1.55
 };
 
 export const EYEBROW_STYLE: CSSProperties = {
   margin: 0,
-  color: '#6849bc',
-  fontSize: 13,
+  color: '#7c63d6',
+  fontSize: 14,
   fontFamily: FONT_STACK,
-  fontWeight: 600,
-  letterSpacing: '0.22em',
+  fontWeight: 700,
+  letterSpacing: '0.28em',
   textTransform: 'uppercase'
 };
 
-const Header = () => (
-  <header
-    style={{
-      width: '100%',
-      background: 'white',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '14px clamp(16px, 5vw, 28px)',
-      boxSizing: 'border-box'
-    }}
-  >
-    <div
-      style={{
-        color: '#9B86EA',
-        fontSize: 'clamp(30px, 7vw, 36px)',
-        letterSpacing: '-0.05em',
-        fontFamily: 'Octarine, system-ui, sans-serif',
-        fontWeight: 700,
-        lineHeight: 1
-      }}
-    >
-      sugar
-    </div>
-    <div
-      aria-hidden
-      style={{
-        border: '1px solid #ede5fe',
-        borderRadius: 14,
-        padding: '10px 14px',
-        color: '#6849bc',
-        fontWeight: 700,
-        fontSize: 14,
-        lineHeight: 1,
-        letterSpacing: 2
-      }}
-    >
-      •••
-    </div>
-  </header>
-);
+// ── Onboarding sheet (phone-style dialog over a blurred backdrop) ────────────
 
-export const Page = ({ children, maxWidth = 560 }: { children: ReactNode; maxWidth?: number }) => (
-  <div style={PAGE_STYLE}>
-    <Header />
-    <div
-      style={{
-        width: '100%',
-        maxWidth,
-        padding: 'clamp(20px, 5vw, 36px) clamp(16px, 5vw, 24px) 64px',
-        boxSizing: 'border-box'
-      }}
-    >
-      {children}
-    </div>
+const BACKDROP_STYLE: CSSProperties = {
+  width: '100%',
+  minHeight: '100dvh',
+  background:
+    'radial-gradient(circle at 25% 15%, #a49dbb 0%, transparent 45%), ' +
+    'radial-gradient(circle at 80% 70%, #8f88a6 0%, transparent 50%), ' +
+    'linear-gradient(165deg, #96909c 0%, #7b7590 55%, #8b8496 100%)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '32px 16px',
+  boxSizing: 'border-box'
+};
+
+const ProgressDots = ({ step, total }: { step: number; total: number }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+    {Array.from({ length: total }, (_, i) => {
+      if (i === step) {
+        return (
+          <span
+            key={i}
+            style={{ width: 54, height: 9, borderRadius: 9, background: '#9b85e9' }}
+          />
+        );
+      }
+      return (
+        <span
+          key={i}
+          style={{
+            width: 9,
+            height: 9,
+            borderRadius: '50%',
+            background: i < step ? '#34d399' : '#dbe2ee'
+          }}
+        />
+      );
+    })}
   </div>
 );
 
-export const Card = ({ children, style }: { children: ReactNode; style?: CSSProperties }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-    style={{ ...CARD_STYLE, ...style }}
+export const Sheet = ({
+  step,
+  totalSteps = 6,
+  onSkip,
+  onBack,
+  continueButton,
+  children
+}: {
+  step?: number;
+  totalSteps?: number;
+  onSkip?: () => void;
+  onBack?: () => void;
+  continueButton?: ReactNode;
+  children: ReactNode;
+}) => {
+  const hasFooter = Boolean(onBack || continueButton);
+
+  return (
+    <div style={BACKDROP_STYLE}>
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          width: 'min(430px, 100%)',
+          background: 'white',
+          borderRadius: 36,
+          boxShadow: '0 30px 80px -30px rgba(30, 20, 70, 0.55)',
+          overflow: 'hidden',
+          fontFamily: FONT_STACK
+        }}
+      >
+        {(step !== undefined || onSkip) && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '22px 26px',
+              borderBottom: '1px solid #f1f3f9'
+            }}
+          >
+            {step !== undefined ? <ProgressDots step={step} total={totalSteps} /> : <span />}
+            {onSkip && (
+              <button
+                type="button"
+                onClick={onSkip}
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  color: '#94a3b8',
+                  fontFamily: FONT_STACK,
+                  fontSize: 17,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0
+                }}
+              >
+                Skip for now
+              </button>
+            )}
+          </div>
+        )}
+
+        <div style={{ padding: '26px 26px 28px' }}>{children}</div>
+
+        {hasFooter && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '18px 26px 24px',
+              borderTop: '1px solid #f1f3f9'
+            }}
+          >
+            {onBack ? (
+              <button
+                type="button"
+                onClick={onBack}
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  color: '#111827',
+                  fontFamily: FONT_STACK,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  padding: 0
+                }}
+              >
+                Back
+              </button>
+            ) : (
+              <span />
+            )}
+            {continueButton}
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
+// Gradient icon tile, like the phone-number onboarding step.
+export const IconTile = ({ children }: { children: ReactNode }) => (
+  <div
+    style={{
+      width: 76,
+      height: 76,
+      borderRadius: 22,
+      background: 'linear-gradient(135deg, #b06ae8 0%, #f0568f 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 34,
+      color: 'white',
+      boxShadow: '0 14px 30px -14px rgba(217, 90, 150, 0.6)'
+    }}
   >
     {children}
-  </motion.div>
+  </div>
+);
+
+// Purple info chip with a check, like "We'll use this for account support...".
+export const InfoChip = ({ children }: { children: ReactNode }) => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 14,
+      background: '#f6f2ff',
+      border: '1px solid #ede5fe',
+      borderRadius: 20,
+      padding: '18px 18px'
+    }}
+  >
+    <span
+      style={{
+        width: 34,
+        height: 34,
+        borderRadius: '50%',
+        background: '#9b85e9',
+        color: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0
+      }}
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="3">
+        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+    <span style={{ color: '#5b4bab', fontSize: 16, fontWeight: 500, lineHeight: 1.45, fontFamily: FONT_STACK }}>
+      {children}
+    </span>
+  </div>
 );
 
 export const PrimaryButton = ({
   children,
   onClick,
   disabled = false,
+  fullWidth = true,
   style
 }: {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  fullWidth?: boolean;
   style?: CSSProperties;
 }) => (
   <motion.button
     type="button"
     onClick={onClick}
     disabled={disabled}
-    whileHover={disabled ? undefined : { y: -2 }}
     whileTap={disabled ? undefined : { scale: 0.98 }}
     style={{
-      width: '100%',
-      padding: '15px',
-      background: disabled ? '#c3aef9' : '#9b85e9',
-      boxShadow: disabled ? 'none' : '0 14px 40px -18px rgba(155, 133, 233, 0.65)',
-      borderRadius: 14,
+      width: fullWidth ? '100%' : 'auto',
+      padding: fullWidth ? '18px' : '14px 28px',
+      background: disabled ? '#c8b9f5' : '#9b85e9',
+      borderRadius: fullWidth ? 22 : 14,
       color: 'white',
-      fontSize: 16,
+      fontSize: 18,
       fontFamily: FONT_STACK,
       fontWeight: 600,
       border: 'none',
@@ -172,19 +285,15 @@ export const OptionButton = ({
   <motion.button
     type="button"
     onClick={onClick}
-    whileHover={{ y: -2 }}
     whileTap={{ scale: 0.98 }}
     style={{
       width: '100%',
-      padding: '16px 20px',
-      background: selected ? '#9b85e9' : 'white',
-      color: selected ? 'white' : '#0f172a',
-      border: '1px solid ' + (selected ? '#9b85e9' : '#ede5fe'),
-      boxShadow: selected
-        ? '0 14px 40px -18px rgba(155, 133, 233, 0.65)'
-        : '0 8px 24px -18px rgba(155, 133, 233, 0.4)',
-      borderRadius: 16,
-      fontSize: 16,
+      padding: '17px 20px',
+      background: selected ? '#9b85e9' : '#fbfaff',
+      color: selected ? 'white' : '#111827',
+      border: '1.5px solid ' + (selected ? '#9b85e9' : '#e5dcfb'),
+      borderRadius: 18,
+      fontSize: 17,
       fontFamily: FONT_STACK,
       fontWeight: 600,
       cursor: 'pointer',
@@ -193,6 +302,77 @@ export const OptionButton = ({
   >
     {children}
   </motion.button>
+);
+
+// ── Phone-frame page (dashboard) ─────────────────────────────────────────────
+
+export const PHONE_WIDTH = 470;
+
+// Full page laid out as a phone column even on desktop, like the live app.
+export const PhonePage = ({ children }: { children: ReactNode }) => (
+  <div
+    style={{
+      width: '100%',
+      minHeight: '100dvh',
+      background: '#e9e5f1',
+      display: 'flex',
+      justifyContent: 'center'
+    }}
+  >
+    <div
+      style={{
+        width: `min(${PHONE_WIDTH}px, 100%)`,
+        minHeight: '100dvh',
+        background: 'white',
+        boxShadow: '0 0 60px rgba(30, 20, 70, 0.12)',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: FONT_STACK
+      }}
+    >
+      {children}
+    </div>
+  </div>
+);
+
+export const PhoneHeader = () => (
+  <header
+    style={{
+      background: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '16px 20px'
+    }}
+  >
+    <div
+      style={{
+        color: '#9B86EA',
+        fontSize: 34,
+        letterSpacing: '-0.05em',
+        fontFamily: 'Octarine, system-ui, sans-serif',
+        fontWeight: 700,
+        lineHeight: 1
+      }}
+    >
+      sugar
+    </div>
+    <div
+      aria-hidden
+      style={{
+        border: '1px solid #ede5fe',
+        borderRadius: 14,
+        padding: '12px 14px',
+        color: '#6849bc',
+        fontWeight: 700,
+        fontSize: 13,
+        lineHeight: 1,
+        letterSpacing: 2
+      }}
+    >
+      •••
+    </div>
+  </header>
 );
 
 // CSS confetti, same approach as the production paywall-success screen.

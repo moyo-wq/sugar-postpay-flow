@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Page, Card, PrimaryButton, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
+import {
+  Sheet,
+  PrimaryButton,
+  HEADING_STYLE,
+  BODY_STYLE,
+  EYEBROW_STYLE,
+  FONT_STACK
+} from '../../components/ui';
 import { setDemoPaid, resetDemo } from '../../lib/demoStore';
 import { updateFlowState } from '../../lib/flowState';
 
@@ -34,91 +41,84 @@ const FakePay = () => {
     window.location.reload();
   };
 
+  const inputStyle = (invalid = false) => ({
+    padding: '15px 16px',
+    borderRadius: 16,
+    border: '1.5px solid ' + (invalid ? '#c0392b' : '#ddd3fb'),
+    background: '#fbfaff',
+    color: '#111827',
+    fontSize: 17,
+    fontWeight: 500,
+    fontFamily: FONT_STACK,
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box' as const
+  });
+
   return (
-    <Page maxWidth={480}>
+    <Sheet>
       <style>{`
         @keyframes fakepay-spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
       `}</style>
-      <Card>
-        <div
-          style={{
-            fontSize: 13,
-            fontWeight: 700,
-            letterSpacing: 1.2,
-            textTransform: 'uppercase',
-            color: '#9B86EA',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
-          }}
-        >
-          Demo checkout · no real payment
-        </div>
-        <h1 style={{ ...HEADING_STYLE, marginTop: 10, fontSize: 'clamp(26px, 6vw, 34px)' }}>
-          Unlock your Sugar concierge
-        </h1>
+      <p style={EYEBROW_STYLE}>Demo checkout · no real payment</p>
+      <h1 style={{ ...HEADING_STYLE, marginTop: 12 }}>Unlock your Sugar concierge</h1>
 
-        <div
-          style={{
-            marginTop: 20,
-            padding: '14px 16px',
-            borderRadius: 14,
-            background: '#F0EFFA',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
-          }}
-        >
-          <span style={{ color: '#64748b', fontWeight: 600 }}>Concierge unlock fee</span>
-          <span style={{ color: '#0f172a', fontWeight: 800, fontSize: 20 }}>$49.00</span>
-        </div>
+      <div
+        style={{
+          marginTop: 20,
+          padding: '15px 16px',
+          borderRadius: 16,
+          background: '#f6f2ff',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontFamily: FONT_STACK
+        }}
+      >
+        <span style={{ color: '#64748b', fontWeight: 600 }}>Concierge unlock fee</span>
+        <span style={{ color: '#111827', fontWeight: 800, fontSize: 20 }}>$49.00</span>
+      </div>
 
-        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 6,
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}
-          >
-            <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>Email</span>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => setEmailTouched(true)}
-              placeholder="you@gmail.com"
-              style={{
-                padding: '12px 14px',
-                borderRadius: 12,
-                border: '1px solid ' + (emailTouched && !emailValid ? '#c0392b' : '#E4E1F5'),
-                background: '#FAFAFF',
-                color: '#232843',
-                fontSize: 16,
-                fontWeight: 500,
-                outline: 'none'
-              }}
-            />
-            {emailTouched && !emailValid && (
-              <span style={{ color: '#c0392b', fontSize: 13 }}>Enter a valid email address.</span>
-            )}
+      <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 6, fontFamily: FONT_STACK }}>
+          <span style={{ color: '#64748b', fontSize: 14, fontWeight: 600 }}>Email</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => setEmailTouched(true)}
+            placeholder="you@gmail.com"
+            style={inputStyle(emailTouched && !emailValid)}
+          />
+          {emailTouched && !emailValid && (
+            <span style={{ color: '#c0392b', fontSize: 13 }}>Enter a valid email address.</span>
+          )}
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 6, fontFamily: FONT_STACK }}>
+          <span style={{ color: '#64748b', fontSize: 14, fontWeight: 600 }}>Card number</span>
+          <input value="4242 4242 4242 4242" readOnly style={inputStyle()} />
+        </label>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <label style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6, fontFamily: FONT_STACK }}>
+            <span style={{ color: '#64748b', fontSize: 14, fontWeight: 600 }}>Expiry</span>
+            <input value="12 / 29" readOnly style={inputStyle()} />
           </label>
-
-          <FakeField label="Card number" value="4242 4242 4242 4242" />
-          <div style={{ display: 'flex', gap: 12 }}>
-            <FakeField label="Expiry" value="12 / 29" />
-            <FakeField label="CVC" value="123" />
-          </div>
+          <label style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6, fontFamily: FONT_STACK }}>
+            <span style={{ color: '#64748b', fontSize: 14, fontWeight: 600 }}>CVC</span>
+            <input value="123" readOnly style={inputStyle()} />
+          </label>
         </div>
+      </div>
 
+      <div style={{ marginTop: 24 }}>
         <PrimaryButton
           onClick={handlePay}
           disabled={processing}
           style={{
-            marginTop: 24,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -140,14 +140,14 @@ const FakePay = () => {
           )}
           {processing ? 'Processing payment…' : 'Pay $49.00'}
         </PrimaryButton>
+      </div>
 
-        <p style={{ ...BODY_STYLE, marginTop: 14, marginBottom: 0, textAlign: 'center', fontSize: 13 }}>
-          Nothing is charged. This simulates a successful payment, then plays the
-          post-payment flow. The email decides which sign-in options you see.
-        </p>
-      </Card>
+      <p style={{ ...BODY_STYLE, marginTop: 14, marginBottom: 0, textAlign: 'center', fontSize: 13 }}>
+        Nothing is charged. This simulates a successful payment, then plays the post-payment
+        flow. The email decides which sign-in options you see.
+      </p>
 
-      <div style={{ marginTop: 20, textAlign: 'center' }}>
+      <div style={{ marginTop: 16, textAlign: 'center' }}>
         <button
           type="button"
           onClick={handleReset}
@@ -155,48 +155,19 @@ const FakePay = () => {
             padding: '8px 16px',
             borderRadius: 50,
             border: 'none',
-            background: '#0f172a',
+            background: '#111827',
             color: 'white',
             fontWeight: 600,
-            fontSize: 14,
+            fontSize: 13,
             cursor: 'pointer',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
+            fontFamily: FONT_STACK
           }}
         >
           Reset demo state
         </button>
       </div>
-    </Page>
+    </Sheet>
   );
 };
-
-const FakeField = ({ label, value }: { label: string; value: string }) => (
-  <label
-    style={{
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 6,
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}
-  >
-    <span style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>{label}</span>
-    <input
-      value={value}
-      readOnly
-      style={{
-        padding: '12px 14px',
-        borderRadius: 12,
-        border: '1px solid #E4E1F5',
-        background: '#FAFAFF',
-        color: '#232843',
-        fontSize: 16,
-        fontWeight: 500,
-        width: '100%',
-        boxSizing: 'border-box'
-      }}
-    />
-  </label>
-);
 
 export default FakePay;

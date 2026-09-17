@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Page, Card, PrimaryButton, Confetti, HEADING_STYLE, BODY_STYLE } from '../../components/ui';
+import { Sheet, PrimaryButton, Confetti, HEADING_STYLE, BODY_STYLE, EYEBROW_STYLE } from '../../components/ui';
 import { updateFlowState, computeScanRange, formatMoney } from '../../lib/flowState';
 
 const TICK_MS = 2200;
@@ -36,44 +36,35 @@ const ScanResults = () => {
   const highNow = Math.round((high * eased) / 100) * 100;
 
   return (
-    <Page maxWidth={520}>
+    <Sheet step={2}>
       {done && <Confetti />}
-      <Card style={{ textAlign: 'center' }}>
-        <h1 style={{ ...HEADING_STYLE, fontSize: 'clamp(24px, 5.5vw, 32px)' }}>
-          Scan complete. Here&rsquo;s what we found
+      <div style={{ textAlign: 'center' }}>
+        <p style={EYEBROW_STYLE}>Scan complete</p>
+        <h1 style={{ ...HEADING_STYLE, marginTop: 12, fontSize: 26 }}>
+          Here&rsquo;s what we found
         </h1>
 
         <div
           style={{
-            marginTop: 28,
+            marginTop: 26,
             display: 'flex',
             alignItems: 'baseline',
             justifyContent: 'center',
-            gap: 'clamp(10px, 3vw, 16px)',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
+            gap: 12,
             fontWeight: 800,
-            color: '#0f172a'
+            color: '#111827'
           }}
         >
-          <span style={{ fontSize: 'clamp(34px, 9vw, 52px)', fontVariantNumeric: 'tabular-nums' }}>
+          <span style={{ fontSize: 'clamp(32px, 9vw, 44px)', fontVariantNumeric: 'tabular-nums' }}>
             {formatMoney(lowNow)}
           </span>
-          <span
-            style={{
-              fontSize: 'clamp(16px, 4vw, 20px)',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-              fontWeight: 600,
-              color: '#64748b'
-            }}
-          >
-            to
-          </span>
-          <span style={{ fontSize: 'clamp(34px, 9vw, 52px)', fontVariantNumeric: 'tabular-nums' }}>
+          <span style={{ fontSize: 17, fontWeight: 600, color: '#64748b' }}>to</span>
+          <span style={{ fontSize: 'clamp(32px, 9vw, 44px)', fontVariantNumeric: 'tabular-nums' }}>
             {formatMoney(highNow)}
           </span>
         </div>
 
-        <p style={{ ...BODY_STYLE, marginTop: 10, fontWeight: 700, color: '#0f172a' }}>
+        <p style={{ ...BODY_STYLE, marginTop: 10, fontWeight: 700, color: '#111827' }}>
           in savings a year
         </p>
         <p style={{ ...BODY_STYLE, marginTop: 6, fontSize: 14 }}>
@@ -87,18 +78,18 @@ const ScanResults = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <p style={{ ...BODY_STYLE, marginTop: 22, fontSize: 14 }}>
-                Specific savings can increase or decrease after our call with you
-                depending on your preferences.
+              <p style={{ ...BODY_STYLE, marginTop: 20, fontSize: 14 }}>
+                Specific savings can increase or decrease after our call with you depending on
+                your preferences.
               </p>
-              <div style={{ marginTop: 22 }}>
+              <div style={{ marginTop: 20 }}>
                 <PrimaryButton onClick={() => navigate('/contact-method')}>Got it</PrimaryButton>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </Card>
-    </Page>
+      </div>
+    </Sheet>
   );
 };
 

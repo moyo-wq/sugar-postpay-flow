@@ -19,9 +19,12 @@ const ContactMethod = () => {
       // Calls are booked through Calendly; open it and confirm.
       window.open(CALENDLY_CALL_URL, '_blank', 'noopener');
       navigate('/confirmation');
-    } else {
-      navigate('/phone');
     }
+    // SMS/text option disabled — the 'text' path (number entry at /phone) is
+    // commented out below.
+    // else {
+    //   navigate('/phone');
+    // }
   };
 
   return (
@@ -38,7 +41,9 @@ const ContactMethod = () => {
             <div style={{ ...BODY_STYLE, fontSize: 14, marginTop: 4 }}>We&rsquo;ll use {email}</div>
           )}
         </OptionButton>
+        {/* SMS/text contact option disabled
         <OptionButton onClick={() => choose('text')}>💬 &nbsp;Text me</OptionButton>
+        */}
         <OptionButton onClick={() => choose('call')}>📞 &nbsp;Call me</OptionButton>
       </div>
     </Sheet>

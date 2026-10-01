@@ -6,7 +6,8 @@ import SignIn from './screens/SignIn';
 import Connecting from './screens/Connecting';
 import ScanResults from './screens/ScanResults';
 import ContactMethod from './screens/ContactMethod';
-import PhoneNumber from './screens/PhoneNumber';
+// SMS/text contact option disabled — phone-number entry screen no longer routed.
+// import PhoneNumber from './screens/PhoneNumber';
 import Confirmation from './screens/Confirmation';
 import Dashboard from './screens/Dashboard';
 
@@ -20,7 +21,8 @@ function App() {
         <Route path="/connecting" element={<Connecting />} />
         <Route path="/scan-results" element={<ScanResults />} />
         <Route path="/contact-method" element={<ContactMethod />} />
-        <Route path="/phone" element={<PhoneNumber />} />
+        {/* SMS/text contact option disabled
+        <Route path="/phone" element={<PhoneNumber />} /> */}
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
